@@ -3,7 +3,7 @@ import axios from "axios";
 
 const SearchBar =()=>{
 
-    const [term, setTerm]= useState('')
+    const [term, setTerm]= useState('programming')
     const[results, setResults] = useState([])
     useEffect(()=>{
         const search = async () =>{
@@ -19,11 +19,19 @@ const SearchBar =()=>{
             })
             setResults(data.query.search)
         }
-        setTimeout(() => {
-            if(term){
-           search() 
+        if (term && !results.length){
+            search()
+        } else {
+            const timeout = setTimeout(() => {
+                if(term){
+               search() 
+            }
+            }, 1000);
+            return ()=> {
+                clearTimeout(timeout)
+            }
         }
-        }, 1000);
+       
         
         
     }, [term])
